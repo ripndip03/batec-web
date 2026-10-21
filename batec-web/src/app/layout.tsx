@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { site } from "@/lib/site";
 import "./globals.css";
+import "./home.css";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
     locale: "en_GB",
-    // TODO: add /og.jpg from the official campaign once supplied
+    images: [{ url: "/hero/hero-desktop.jpg", width: 1920, height: 1080, alt: "BATEC" }],
   },
   twitter: { card: "summary_large_image" },
   alternates: { canonical: "/" },

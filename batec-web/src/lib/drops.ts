@@ -4,12 +4,11 @@ export const drops: Drop[] = [
   {
     id: "drop-001",
     number: "001",
-    name: "DREAM CITY KIDZz",
+    name: "SAFA",
     city: "Barcelona",
     status: "live",
     launchAt: null,
-    intro:
-      "DROP 001 — DREAM CITY KIDZz is inspired by the streets, the energy and the dreams of a new generation.",
+    intro: "DROP 001 — SAFA is inspired by the streets, the energy and the dreams of a new generation.",
   },
   {
     // Name, products and date intentionally empty until BATEC announces them.
@@ -18,6 +17,7 @@ export const drops: Drop[] = [
     name: null,
     city: null,
     status: "coming_soon",
+    // Set an ISO date (e.g. "2027-03-01T18:00:00+01:00") to show the countdown.
     launchAt: null,
     intro: null,
   },

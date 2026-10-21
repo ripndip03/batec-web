@@ -1,34 +1,49 @@
-import type { Product, Variant } from "./types";
+import type { Product, ProductImage, Variant } from "./types";
 import { showDrafts } from "./site";
 
 /**
- * Colourways listed in the brief. Images, price, sizes and stock are null until
- * BATEC supplies them; `published` stays false until all are confirmed.
- *
- * To publish a variant:
- *   1. Add front/back photos under /public/products/melted-heart-tee/<slug>/
- *   2. Fill `images`, `price`, `sizes`, `availability`
- *   3. Set `published: true`
+ * DROP 001 — SAFA · Melted Heart Tee.
+ * Photos live in /public/products/melted-heart-tee/<slug>-front.webp and -back.webp.
+ * Checkout happens in the Shopify store: `shopHandle` is the product handle there.
+ * Sizes and stock are managed in Shopify, so they stay null here.
  */
-type Seed = [color: string, melt: string, bodyHex: string, meltHex: string | [string, string]];
+type Seed = [
+  color: string,
+  melt: string,
+  bodyHex: string,
+  meltHex: string | [string, string],
+  shopHandle: string | null,
+];
 
+const PRICE = { amount: 2700, currency: "EUR" } as const;
+
+// Order = order on the wardrobe rail.
 const seeds: Seed[] = [
-  ["White", "Pink Melt", "#F4F4F2", "#F59BB8"],
-  ["Black", "Fuchsia Melt", "#151515", "#F72575"],
-  ["Brown", "Honey Melt", "#5A3B2A", "#E0A53C"],
-  ["Brown", "Light Pink Melt", "#5A3B2A", "#F6C1D0"],
-  ["Brown", "Pink Melt", "#5A3B2A", "#EE6F9A"],
-  ["Navy", "Mint Melt", "#1C2440", "#9FE3C9"],
-  ["Off-White", "Navy Melt", "#EDE8DC", "#1C2440"],
-  ["Off-White", "Blaugrana Melt", "#EDE8DC", ["#A50044", "#004D98"]],
-  ["Pastel Pink", "Fuchsia Melt", "#F6CFD8", "#F72575"],
-  ["Pastel Pink", "Mint Melt", "#F6CFD8", "#9FE3C9"],
+  ["Black", "Fuchsia Melt", "#141414", "#F72575", "batec-001-melted-heart-tee-black-pink-melt"],
+  ["White", "Pink Melt", "#FAFAF8", "#E8365E", "batec-001-melted-heart-tee-white"],
+  ["Off-White", "Navy Melt", "#EFEBE2", "#22356E", "batec-001-melted-heart-tee-white-blue-melt"],
+  ["Brown", "Honey Melt", "#3A2418", "#E0A126", "batec-001-melted-heart-tee-brown-honey-melt"],
+  ["Navy", "Mint Melt", "#14223F", "#5FD8B4", "batec-001-melted-heart-tee-navy-mint-melt"],
+  // Shopify title still says "Navy & Mint Melt", but this product is the pastel pink / fuchsia tee.
+  ["Pastel Pink", "Fuchsia Melt", "#F6C6D3", "#E8365E", "batec-001-melted-heart-tee-navy-mint-melt-1"],
+  ["Off-White", "Blaugrana Melt", "#EFEBE2", ["#A50044", "#2A3B8F"], "batec-001-melted-heart-tee-barca-inspo"],
+  ["Brown", "Light Pink Melt", "#3A2418", "#F6C1D0", "batec-001-melted-heart-tee-brown"],
+  ["Pastel Pink", "Mint Melt", "#F6C6D3", "#8FE3C7", "batec-001-melted-heart-tee-pink-mint-melt"],
+  ["Brown", "Pink Melt", "#3A2418", "#F0437A", "batec-001-melted-heart-tee-brown-glowy-pink-melt"],
 ];
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-const variants: Variant[] = seeds.map(([color, melt, bodyHex, meltHex]) => {
+const img = (slug: string, side: "front" | "back", label: string): ProductImage => ({
+  src: `/products/melted-heart-tee/${slug}-${side}.webp`,
+  alt: `Melted Heart Tee, ${label}, ${side}`,
+  width: 814,
+  height: 900,
+});
+
+const variants: Variant[] = seeds.map(([color, melt, bodyHex, meltHex, shopHandle]) => {
   const slug = slugify(`${color}-${melt}`);
+  const label = `${color} / ${melt}`;
   return {
     id: `mht-${slug}`,
     slug,
@@ -36,11 +51,12 @@ const variants: Variant[] = seeds.map(([color, melt, bodyHex, meltHex]) => {
     melt,
     bodyHex,
     meltHex,
-    images: { front: null, back: null, gallery: [] },
-    price: null,
+    images: { front: img(slug, "front", label), back: img(slug, "back", label), gallery: [] },
+    shopHandle,
+    price: PRICE,
     sizes: null,
     availability: null,
-    published: false,
+    published: true,
   };
 });
 
@@ -59,9 +75,9 @@ export const products: Product[] = [
   },
 ];
 
-/** A variant is ready to sell only when every commercial field is confirmed. */
+/** A variant can be shown when it has photos, a price and a store link. */
 export const isComplete = (v: Variant) =>
-  v.published && !!v.images.front && !!v.images.back && !!v.price && !!v.sizes && !!v.availability;
+  v.published && !!v.images.front && !!v.images.back && !!v.price && !!v.shopHandle;
 
 export function visibleVariants(product: Product): Variant[] {
   return product.variants.filter((v) => isComplete(v) || showDrafts);
@@ -69,7 +85,8 @@ export function visibleVariants(product: Product): Variant[] {
 
 export function formatPrice(price: Variant["price"]): string | null {
   if (!price) return null;
-  return new Intl.NumberFormat("es-ES", { style: "currency", currency: price.currency }).format(price.amount / 100);
+  const euros = price.amount / 100;
+  return Number.isInteger(euros) ? `${euros} €` : new Intl.NumberFormat("es-ES", { style: "currency", currency: price.currency }).format(euros);
 }
 
 export const availabilityLabel: Record<NonNullable<Variant["availability"]>, string> = {

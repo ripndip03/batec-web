@@ -4,18 +4,17 @@
  */
 export const site = {
   name: "BATEC",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://batec-web.vercel.app",
   tagline: "Every city has a heartbeat.",
   claim: "Born in Barcelona. Made for everywhere.",
   description:
-    "BATEC is a streetwear brand born in Barcelona in 2026. In Catalan, batec means heartbeat. DROP 001 — DREAM CITY KIDZz.",
-  /**
-   * Official logo files go in /public/brand/. Set `src` once they are supplied.
-   * Until then the header shows a plain text placeholder (not a redrawn logo).
-   */
-  logo: { src: null as string | null, width: 160, height: 40 },
-  /** Show "TM" next to the logo only if the brand confirms it. Never ®. */
+    "BATEC is a streetwear brand born in Barcelona in 2026. In Catalan, batec means heartbeat. DROP 001 — SAFA.",
+  /** Official logo. The negative version (black parts in off-white) is for dark backgrounds. */
+  logo: { src: "/brand/batec-logo-negative.png" as string | null, width: 300, height: 227 },
+  /** Show "TM" next to the logo only if the brand confirms it. */
   trademark: null as null | "TM",
+  /** Checkout happens in the Shopify store. */
+  store: "https://nr0tm0-tu.myshopify.com",
   contact: {
     email: null as string | null,
     business: null as string | null,
@@ -26,8 +25,8 @@ export const site = {
   },
   nav: [
     { href: "/", label: "Home" },
-    { href: "/shop", label: "Shop" },
-    { href: "/drops", label: "Drops" },
+    { href: "/#shop", label: "Shop" },
+    { href: "/#drops", label: "Drops" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ],

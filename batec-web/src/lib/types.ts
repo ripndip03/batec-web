@@ -35,6 +35,8 @@ export interface Variant {
   bodyHex: string;
   meltHex: string | [string, string];
   images: { front: ProductImage | null; back: ProductImage | null; gallery: ProductImage[] };
+  /** Product handle in the Shopify store (checkout happens there). */
+  shopHandle: string | null;
   /** null = not confirmed yet. The UI must never invent a value. */
   price: Money | null;
   sizes: SizeStock[] | null;
