@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Hanken_Grotesk, JetBrains_Mono, Rubik_Wet_Paint } from "next/font/google";
+import { Archivo, Hanken_Grotesk, JetBrains_Mono, Rubik_Wet_Paint, Sedgwick_Ave_Display } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { site } from "@/lib/site";
@@ -17,6 +17,8 @@ const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken", d
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
 // Experimental face: campaign elements only.
 const wetPaint = Rubik_Wet_Paint({ subsets: ["latin"], weight: "400", variable: "--font-wetpaint", display: "swap" });
+// Hand-style graffiti face for the mural lettering on the wardrobe doors.
+const graffiti = Sedgwick_Ave_Display({ subsets: ["latin"], weight: "400", variable: "--font-graffiti", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -41,7 +43,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${archivo.variable} ${hanken.variable} ${jetbrains.variable} ${wetPaint.variable}`}>
+    <html lang="en" className={`${archivo.variable} ${hanken.variable} ${jetbrains.variable} ${wetPaint.variable} ${graffiti.variable}`}>
       <body>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-paper focus:px-4 focus:py-2">
           Skip to content

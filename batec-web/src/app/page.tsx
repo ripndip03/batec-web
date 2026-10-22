@@ -153,7 +153,7 @@ export default function HomePage() {
             <h2 className="display" id="shop-title">Shop the drop</h2>
           </div>
 
-          <div className="cabinet" id="cabinet">
+          <div className="cabinet shut" id="cabinet">
             <div className="closet" id="closet">
               <div className="wall-back" aria-hidden="true" />
               <div className="wall-l" aria-hidden="true" />
@@ -168,6 +168,12 @@ export default function HomePage() {
             </div>
             <div className="door l" aria-hidden="true" />
             <div className="door r" aria-hidden="true" />
+            <button className="open-doors" id="openDoors" type="button">
+              Open the wardrobe
+            </button>
+            <button className="close-doors" id="closeDoors" type="button">
+              Close the doors
+            </button>
             <div className="drawer-front" id="drawerFront" aria-live="polite">
               <div className="di-name">
                 <span className="di-count" id="diCount">
